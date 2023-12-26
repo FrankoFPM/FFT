@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Asegúrate de tener la ruta correcta al archivo
-df = pd.read_excel("onda_normalizada.xlsx")
+df = pd.read_excel("C:\\Users\\franc\Documents\\UTP\\CAF I\\txy.xlsx")
 
 # Supongamos que 'Tiempo' es tu columna de tiempo y 'x' es tu columna de datos de onda
-tiempo = df["tiempo"]
+tiempo = df["t"]
 onda_compleja = df["x"]
 
 

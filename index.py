@@ -28,7 +28,7 @@ def cargar_archivo():
 
 # crear funcion para graficar las ondas
 def graficar(t, x, y):
-    global df_uniforme, tiempo_uniforme, onda_reconstruida_y  # declarar las variables como globales
+    global df_uniforme, tiempo_uniforme, onda_reconstruida_y, df_filtrada  # declarar las variables como globales
     # t, x, y = cargar_archivo()
     tiempo = np.array(t)
     # Convertir la lista tiempo a un objeto de tipo numpy.ndarray
@@ -128,6 +128,7 @@ def graficar(t, x, y):
         onda_individual = amplitud * np.cos(
             2 * np.pi * freqy[i] * tiempo - fase
         )
+        print(f'{amplitud:.3f} * cos(2*pi * {freqy[i]:.3f} * x + {fase:.3f})+')
         # Sumar la onda individual a la onda reconstruida
         onda_reconstruida_y += onda_individual
         plt.plot(tiempo, onda_individual)
@@ -146,6 +147,7 @@ def graficar(t, x, y):
 
     # Crear un DataFrame con tus datos
     df_uniforme = pd.DataFrame({"t": tiempo, "x": onda_reconstruida_x, "y": onda_reconstruida_y})
+    df_filtrada = pd.DataFrame({"t": tiempo, "x": x_filtered, "y": y_filtered})
 
     plt.subplot(4, 3, 7)
     plt.title("Onda reconstruida Y")
@@ -169,13 +171,19 @@ def guardar_archivo():
     if ruta_archivo:  # si se seleccionó un archivo
         df_uniforme.to_excel(ruta_archivo, index=False)  # lee el archivo con pandas
 
+def guarda_filtrado():
+    ruta_archivo = (
+        filedialog.asksaveasfilename()
+    )  # abre el explorador de archivos y guarda la ruta del archivo seleccionado
+    if ruta_archivo:  # si se seleccionó un archivo
+        df_filtrada.to_excel(ruta_archivo, index=False)  # lee el archivo con pandas
 
 root = tk.Tk()
 boton = tk.Button(
     root, text="Cargar archivo", command=cargar_archivo
 )  # crea un botón que llama a la función cargar_archivo cuando se presiona
 # crear boton para graficar
-boton2 = tk.Button(root, text="Graficar", command=graficar)
+boton2 = tk.Button(root, text="Guardar filtrado", command=guarda_filtrado)
 # crea boton para guardar archivo
 boton3 = tk.Button(root, text="Guardar archivo", command=guardar_archivo)
 boton.pack()
